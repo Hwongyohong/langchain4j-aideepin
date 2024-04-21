@@ -36,6 +36,7 @@ public class QianFanLLMService extends AbstractLLMService<QianFanSetting> {
                 .maxRetries(1)
                 .apiKey(setting.getApiKey())
                 .secretKey(setting.getSecretKey())
+//                .responseFormat("")
                 .build();
     }
 
@@ -47,6 +48,7 @@ public class QianFanLLMService extends AbstractLLMService<QianFanSetting> {
                 .topP(1.0)
                 .apiKey(setting.getApiKey())
                 .secretKey(setting.getSecretKey())
+//                .responseFormat("json_object")
                 .build();
     }
 

@@ -7,7 +7,11 @@ import com.moyz.adi.common.dto.ModifyPasswordReq;
 import com.moyz.adi.common.dto.UserUpdateReq;
 import com.moyz.adi.common.entity.User;
 import com.talanlabs.avatargenerator.Avatar;
+import com.talanlabs.avatargenerator.cache.ICache;
 import com.talanlabs.avatargenerator.cat.CatAvatar;
+import com.talanlabs.avatargenerator.layers.backgrounds.RandomColorPaintBackgroundLayer;
+import com.talanlabs.avatargenerator.layers.masks.RoundRectMaskLayer;
+import com.talanlabs.avatargenerator.layers.others.ShadowLayer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 @Slf4j
 @Tag(name = "用户controller")
@@ -65,7 +70,7 @@ public class UserController {
     @GetMapping(value = "/myAvatar", produces = MediaType.IMAGE_JPEG_VALUE)
     public void myAvatar(HttpServletResponse response) {
         User user = ThreadContext.getCurrentUser();
-        Avatar avatar = CatAvatar.newAvatarBuilder().build();
+        Avatar avatar = (CatAvatar.newAvatarBuilder().cache(ICache.defaultCache(Paths.get("temp/avatar/5"))).build());
         BufferedImage bufferedImage = avatar.create(user.getId());
         //把图片写给浏览器
         try {
@@ -83,7 +88,7 @@ public class UserController {
         if(null != user){
             userId = user.getId();
         }
-        Avatar avatar = CatAvatar.newAvatarBuilder().build();
+        Avatar avatar = (CatAvatar.newAvatarBuilder().cache(ICache.defaultCache(Paths.get("temp/avatar/5"))).build());
         BufferedImage bufferedImage = avatar.create(userId);
         //把图片写给浏览器
         try {

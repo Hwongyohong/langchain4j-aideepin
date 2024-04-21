@@ -1,14 +1,22 @@
 package com.moyz.adi.common.helper;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.moyz.adi.common.cosntant.AdiConstant;
+import com.moyz.adi.common.entity.CompanyModel;
 import com.moyz.adi.common.interfaces.AbstractLLMService;
 import com.moyz.adi.common.util.JsonUtil;
 import com.moyz.adi.common.util.LocalCache;
 import com.moyz.adi.common.vo.CommonAiPlatformSetting;
 import com.moyz.adi.common.vo.LLMModelInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
@@ -34,11 +42,12 @@ public class LLMContext {
         }
     }
 
-    public static void addLLMService(String llmServiceKey, AbstractLLMService llmService) {
+    public static void addLLMService(String llmServiceKey, int level,AbstractLLMService llmService) {
         LLMModelInfo llmModelInfo = new LLMModelInfo();
         llmModelInfo.setModelName(llmServiceKey);
         llmModelInfo.setEnable(llmService.isEnabled());
         llmModelInfo.setLlmService(llmService);
+        llmModelInfo.setLevel(level);
         NAME_TO_MODEL.put(llmServiceKey, llmModelInfo);
     }
 
@@ -46,9 +55,12 @@ public class LLMContext {
         return llmService;
     }
 
-    public static String[] getSupportModels(String settingName) {
-        String st = LocalCache.CONFIGS.get(settingName);
-        CommonAiPlatformSetting setting = JsonUtil.fromJson(st, CommonAiPlatformSetting.class);
-        return setting.getModels();
+    public static List<CompanyModel> getSupportModels(String settingName)
+    {
+        String modelsToString = LocalCache.CONFIGS.get(AdiConstant.CompanyModels.MODELS);
+        Gson gson = new Gson();
+        Type mapType = new TypeToken<Map<String, List<CompanyModel>>>(){}.getType();
+        Map<String, List<CompanyModel>> map = gson.fromJson(modelsToString, mapType);
+        return  map.get(settingName);
     }
 }

@@ -6,4 +6,5 @@ import lombok.Data;
 public class ModelInfo {
     private String modelName;
     private Boolean enable;
+    private Integer level;
 }

@@ -80,6 +80,15 @@ public class AdiConstant {
         public static final String SEARCH_UUID = "search_uuid";
     }
 
+    public static class CompanyModels {
+        public static final String MODELS = "models";
+        public static final String OPENAI_MODEL = "openai";
+        public static final String QIANFAN_MODEL = "qianfan";
+        public static final String DASHSCOPE_MODEL = "dashscope";
+        public static final String OLLAMA_MODEL = "ollama";
+        public static final String GOOGLE_MODEL = "google";
+    }
+
     public static class SysConfigKey {
         public static final String OPENAI_SETTING = "openai_setting";
         public static final String DASHSCOPE_SETTING = "dashscope_setting";

@@ -1,6 +1,7 @@
 package com.moyz.adi.common.service;
 
 import com.moyz.adi.common.cosntant.AdiConstant;
+import com.moyz.adi.common.entity.CompanyModel;
 import com.moyz.adi.common.helper.ImageModelContext;
 import com.moyz.adi.common.helper.LLMContext;
 import com.moyz.adi.common.searchengine.GoogleSearchEngine;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -44,39 +46,46 @@ public class Initializer {
         }
 
         //openai
-        String[] openaiModels = LLMContext.getSupportModels(AdiConstant.SysConfigKey.OPENAI_SETTING);
-        if (openaiModels.length == 0) {
+        List<CompanyModel> openaiModels = LLMContext.getSupportModels(AdiConstant.CompanyModels.OPENAI_MODEL);
+        if (openaiModels!=null) {
             log.warn("openai service is disabled");
         }
-        for (String model : openaiModels) {
-            LLMContext.addLLMService(model, new OpenAiLLMService(model).setProxy(proxy));
+        if (openaiModels != null) {
+            for (CompanyModel model : openaiModels) {
+                LLMContext.addLLMService(model.getName(), model.getLevel(), new OpenAiLLMService(model.getName()).setProxy(proxy));
+            }
         }
-
         //dashscope
-        String[] dashscopeModels = LLMContext.getSupportModels(AdiConstant.SysConfigKey.DASHSCOPE_SETTING);
-        if (dashscopeModels.length == 0) {
+        List<CompanyModel> dashscopeModels = LLMContext.getSupportModels(AdiConstant.CompanyModels.DASHSCOPE_MODEL);
+        if (dashscopeModels!=null) {
             log.warn("dashscope service is disabled");
         }
-        for (String model : dashscopeModels) {
-            LLMContext.addLLMService(model, new DashScopeLLMService(model));
+        if (dashscopeModels != null) {
+            for (CompanyModel model : dashscopeModels) {
+                LLMContext.addLLMService(model.getName(),model.getLevel(), new DashScopeLLMService(model.getName()));
+            }
         }
 
         //qianfan
-        String[] qianfanModels = LLMContext.getSupportModels(AdiConstant.SysConfigKey.QIANFAN_SETTING);
-        if (qianfanModels.length == 0) {
+        List<CompanyModel> qianfanModels = LLMContext.getSupportModels(AdiConstant.CompanyModels.QIANFAN_MODEL);
+        if (qianfanModels!=null) {
             log.warn("qianfan service is disabled");
         }
-        for (String model : qianfanModels) {
-            LLMContext.addLLMService(model, new QianFanLLMService(model));
+        if (qianfanModels != null) {
+            for (CompanyModel model : qianfanModels) {
+                LLMContext.addLLMService(model.getName(),model.getLevel(), new QianFanLLMService(model.getName()));
+            }
         }
 
         //ollama
-        String[] ollamaModels = LLMContext.getSupportModels(AdiConstant.SysConfigKey.OLLAMA_SETTING);
-        if (ollamaModels.length == 0) {
+        List<CompanyModel> ollamaModels = LLMContext.getSupportModels(AdiConstant.CompanyModels.OLLAMA_MODEL);
+        if (ollamaModels!=null ) {
             log.warn("ollama service is disabled");
         }
-        for (String model : ollamaModels) {
-            LLMContext.addLLMService("ollama:" + model, new OllamaLLMService(model));
+        if (ollamaModels != null) {
+            for (CompanyModel model : ollamaModels) {
+                LLMContext.addLLMService("ollama:" + model.getName(),model.getLevel(), new OllamaLLMService(model.getName()));
+            }
         }
 
         ImageModelContext.addImageModelService(OpenAiModelName.DALL_E_2, new OpenAiImageModelService(OpenAiModelName.DALL_E_2).setProxy(proxy));

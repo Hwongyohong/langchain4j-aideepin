@@ -65,4 +65,7 @@ public class User extends BaseEntity {
     @Schema(title = "是否管理员（0：否，1：是）")
     @TableField(value = "is_admin")
     private Boolean isAdmin;
+
+    @TableField("user_level")
+    private Integer userLevel;
 }

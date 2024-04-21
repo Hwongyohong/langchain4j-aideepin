@@ -29,6 +29,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -208,6 +209,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         if (user.getUserStatus() == UserStatusEnum.WAIT_CONFIRM) {
             throw new BaseException(ErrorEnum.A_USER_WAIT_CONFIRM);
         }
+        user.setActiveTime(LocalDateTime.now());
         if (!BCrypt.checkpw(loginReq.getPassword(), user.getPassword())) {
 
             //计算错误次数并判断下次登录是否要输入验证码
@@ -223,6 +225,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         LoginResp loginResp = new LoginResp();
         loginResp.setToken(token);
         BeanUtils.copyProperties(user, loginResp);
+
+        this.updateById(user);
+
         return loginResp;
     }
 

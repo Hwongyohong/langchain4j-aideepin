@@ -45,7 +45,8 @@ public class OpenAiLLMService extends AbstractLLMService<OpenAiSetting> {
                 .builder()
                 .modelName(modelName)
                 .apiKey(setting.getSecretKey())
-                .timeout(Duration.of(60, ChronoUnit.SECONDS));
+                .timeout(Duration.of(60, ChronoUnit.SECONDS))
+                .baseUrl("https://openai.no996.live/v1");
         if (null != proxy) {
             builder.proxy(proxy);
         }

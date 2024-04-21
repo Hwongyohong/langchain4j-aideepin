@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/aideepin?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&tinyInt1isBit=false&allowMultiQueries=true
+    url: jdbc:postgresql://175.178.154.96:2345/postgres?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&tinyInt1isBit=false&allowMultiQueries=true
     username: postgres
-    password: 123456
+    password: new_password
   data:
     redis:
       host: localhost
@@ -29,9 +29,9 @@ adi:
   frontend-url: http://localhost:1002
   backend-url: http://localhost:1002/api
   proxy:
-    enable: true
+    enable: false
     host: 127.0.0.1
-    http-port: 1087
+    http-port: 7890
 
 local:
   files: D:/data/files/
