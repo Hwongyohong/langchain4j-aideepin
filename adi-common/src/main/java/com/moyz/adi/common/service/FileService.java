@@ -32,11 +32,16 @@ import static com.moyz.adi.common.enums.ErrorEnum.B_SAVE_IMAGE_ERROR;
 @Service
 public class FileService extends ServiceImpl<FileMapper, AdiFile> {
 
+    @Value("${local.files}")
+    private String filesPath;
+
     @Value("${local.images}")
     private String imagePath;
 
     @Value("${local.tmp_images}")
     private String tmpImagesPath;
+
+
 
     public AdiFile writeToLocal(MultipartFile file) {
         String md5 = MD5Utils.md5ByMultipartFile(file);
@@ -44,11 +49,26 @@ public class FileService extends ServiceImpl<FileMapper, AdiFile> {
                 .eq(AdiFile::getMd5, md5)
                 .eq(AdiFile::getIsDeleted, false)
                 .oneOpt();
+
         if (existFile.isPresent()) {
             return existFile.get();
         }
+
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        Pair<String, String> originalFile = FileUtil.saveToLocal(file, imagePath, uuid);
+
+        // 检查并创建目录
+        File directory = new File(filesPath);
+        if (!directory.exists()) {
+            // 如果目录不存在则创建它
+            boolean wasSuccessful = directory.mkdirs();
+            if (!wasSuccessful) {
+                throw new RuntimeException("Failed to create directory: " + filesPath);
+            }
+        }
+
+        // 保存文件到本地存储
+        Pair<String, String> originalFile = FileUtil.saveToLocal(file, filesPath, uuid);
+
         AdiFile adiFile = new AdiFile();
         adiFile.setUuid(uuid);
         adiFile.setMd5(md5);
@@ -56,6 +76,7 @@ public class FileService extends ServiceImpl<FileMapper, AdiFile> {
         adiFile.setExt(originalFile.getRight());
         adiFile.setUserId(ThreadContext.getCurrentUserId());
         this.getBaseMapper().insert(adiFile);
+
         return adiFile;
     }
 

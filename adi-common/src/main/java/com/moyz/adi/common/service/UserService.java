@@ -316,7 +316,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         String activeCode = UUID.randomUUID().toString().replace("-", "");
         String activeCodeKey = MessageFormat.format(AUTH_ACTIVE_CODE, activeCode);
         stringRedisTemplate.opsForValue().set(activeCodeKey, email, AdiConstant.AUTH_ACTIVE_CODE_EXPIRE, TimeUnit.HOURS);
-        adiMailSender.send("欢迎注册AIDeepIn", "激活链接(" + AdiConstant.AUTH_ACTIVE_CODE_EXPIRE + "小时内有效):" + backendUrl + "/auth/active?code=" + activeCode, email);
+        adiMailSender.send("欢迎注册yohongAI", "激活链接(" + AdiConstant.AUTH_ACTIVE_CODE_EXPIRE + "小时内有效):" + backendUrl + "/auth/active?code=" + activeCode, email);
     }
 
     public User getByUuid(String uuid){

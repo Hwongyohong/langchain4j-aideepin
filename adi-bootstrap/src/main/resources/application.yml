@@ -10,7 +10,7 @@ spring:
   application:
     name: AiDeepIn
   profiles:
-    active: prod
+    active: dev
   mvc:
     async:
       request-timeout: 60000
@@ -54,14 +54,19 @@ logging:
   file: /data/logs
 
 adi:
-  frontend-url: https://openai.hyhcloud.com
-  backend-url: https://openai.hyhcloud.com/api
+  frontend-url: https://chat.hyhcloud.com/
+  backend-url: https://chat.hyhcloud.com/api
+  openAiUrl: https://openai.no996.live/v1
   proxy:
     enable: false
     host: 127.0.0.1
     http-port: 7890
 
+#local:
+#  files: /data/files/
+#  images: /data/images/
+#  tmp_images: /data/tmp_images/
 local:
-  files: /data/files/
-  images: /data/images/
-  tmp_images: /data/tmp_images/
+  files: D:/data/files/
+  images: D:/data/images/
+  tmp_images: D:/data/tmp_images/

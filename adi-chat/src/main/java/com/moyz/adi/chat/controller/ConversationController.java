@@ -31,7 +31,9 @@ public class ConversationController {
 
     @Operation(summary = "获取当前用户所有的对话")
     @GetMapping("/list")
-    public List<ConvDto> list() {
+    public List<ConvDto> list()
+    {
+        List<ConvDto> list=conversationService.listByUser();
         return conversationService.listByUser();
     }
 

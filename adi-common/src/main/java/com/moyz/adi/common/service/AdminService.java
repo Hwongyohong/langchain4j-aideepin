@@ -36,8 +36,8 @@ public class AdminService {
     @Resource
     private UserModelService userModelService;
 
-
-
+    @Resource
+    private Initializer initializer;
     /**
      *
      * @param userName 用户名
@@ -129,7 +129,9 @@ public class AdminService {
     {
         CompanyModel companyModel =  userModelService.lambdaQuery().eq(CompanyModel::getName,modelReq.getName()).one();
         BeanUtils.copyProperties(modelReq,companyModel);
-            return  userModelService.saveOrUpdate(companyModel,new LambdaQueryWrapper<CompanyModel>().eq(CompanyModel::getName,modelReq.getName()));
+        boolean count = userModelService.saveOrUpdate(companyModel,new LambdaQueryWrapper<CompanyModel>().eq(CompanyModel::getName,modelReq.getName()));
+        initializer.init();
+        return  count;
     }
 
     /**

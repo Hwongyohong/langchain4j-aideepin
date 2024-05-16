@@ -28,6 +28,7 @@ logging:
 adi:
   frontend-url: http://localhost:1002
   backend-url: http://localhost:1002/api
+  openAiUrl: https://openai.no996.live/v1
   proxy:
     enable: false
     host: 127.0.0.1

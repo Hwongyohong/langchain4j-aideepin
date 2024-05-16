@@ -54,7 +54,7 @@ public class ConversationService extends ServiceImpl<ConversationMapper, Convers
     public ConvMsgListResp detail(String uuid, String maxMsgUuid, int pageSize) {
         Conversation conversation = this.lambdaQuery().eq(Conversation::getUuid, uuid).one();
         if (null == conversation) {
-            throw new RuntimeException("找不到对应的会话");
+             throw new RuntimeException("找不到对应的会话");
         }
 
         long maxId = Long.MAX_VALUE;

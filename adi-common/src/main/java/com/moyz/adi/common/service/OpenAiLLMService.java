@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +27,9 @@ import java.time.temporal.ChronoUnit;
 @Slf4j
 @Accessors(chain = true)
 public class OpenAiLLMService extends AbstractLLMService<OpenAiSetting> {
+
+    @Value("${adi.openAiUrl}")
+    protected String openAiUrl;
 
     public OpenAiLLMService(String modelName) {
         super(modelName, AdiConstant.SysConfigKey.OPENAI_SETTING, OpenAiSetting.class);
@@ -46,7 +50,7 @@ public class OpenAiLLMService extends AbstractLLMService<OpenAiSetting> {
                 .modelName(modelName)
                 .apiKey(setting.getSecretKey())
                 .timeout(Duration.of(60, ChronoUnit.SECONDS))
-                .baseUrl("https://openai.no996.live/v1");
+                .baseUrl(openAiUrl);
         if (null != proxy) {
             builder.proxy(proxy);
         }

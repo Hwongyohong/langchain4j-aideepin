@@ -20,6 +20,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import retrofit2.Retrofit;
 
 import java.io.File;
@@ -45,6 +46,9 @@ public class OpenAiImageModelService extends AbstractImageModelService<OpenAiSet
     @Resource
     private ObjectMapper objectMapper;
 
+    @Value("${adi.openAiUrl}")
+    protected String openAiUrl;
+
     public OpenAiImageModelService(String modelName) {
         super(modelName, AdiConstant.SysConfigKey.OPENAI_SETTING, OpenAiSetting.class);
     }
@@ -61,6 +65,7 @@ public class OpenAiImageModelService extends AbstractImageModelService<OpenAiSet
         }
         OpenAiImageModel.OpenAiImageModelBuilder builder = OpenAiImageModel.builder()
                 .modelName(modelName)
+                .baseUrl(openAiUrl)
                 .apiKey(setting.getSecretKey())
                 .user(user.getUuid())
                 .responseFormat(OPENAI_CREATE_IMAGE_RESP_FORMATS_URL)
